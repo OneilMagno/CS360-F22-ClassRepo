@@ -59,12 +59,12 @@ int main(int argc, char ** argv)
 
     // Add title and description
     png_text text[2];
-	text[1].compression = PNG_TEXT_COMPRESSION_NONE;
-	text[1].key = "Title";
-	text[1].text = "P388x240";
-    text[2].compression = PNG_TEXT_COMPRESSION_NONE;
-    text[2].key = "Author";
-	text[2].text = "Scot Morse";
+	text[0].compression = PNG_TEXT_COMPRESSION_NONE;  //The array size was set to 2, so the values should have started from 
+	text[0].key = "Title";                            // 0 -> 1 instead of 1 -> 2
+	text[0].text = "P388x240";
+    text[1].compression = PNG_TEXT_COMPRESSION_NONE;
+    text[1].key = "Author";
+	text[1].text = "Scot Morse";
 	png_set_text(png_ptr, info_ptr, text, 2);
     
     // Actually write the header info
@@ -82,7 +82,6 @@ int main(int argc, char ** argv)
     // Now we're ready to create the image.  Write the data in row_ptrs in RGB format.
 
 
-
     // Now write out this data to the file
     png_write_image(png_ptr, row_ptrs);
 
@@ -97,7 +96,10 @@ int main(int argc, char ** argv)
         free(row_ptrs[j]);
     }
     // then the array of row pointers
-
+    for (int j = 0; j < height; j++)
+    {
+        row_ptrs[j] = NULL;
+    }  
     // free all the resources that libpng allocated
     png_destroy_write_struct(&png_ptr, &info_ptr);
     return EXIT_SUCCESS;
